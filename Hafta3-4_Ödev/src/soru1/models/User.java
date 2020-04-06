@@ -7,14 +7,24 @@ import soru1.interfaces.Address;
 
 public class User {
 
-	protected String firstName;
-	protected String lastName;
-	protected String eMail;
-	protected String occupation;
-	protected String password;
-	protected int age;
-	protected List<Address> addressList;
-	protected Date lastLoginDate;
+	public User(String firstName, String lastName, String eMail, String occupation, String password, int age) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.eMail = eMail;
+		this.occupation = occupation;
+		this.password = password;
+		this.age = age;
+	}
+
+	private String firstName;
+	private String lastName;
+	private String eMail;
+	private String occupation;
+	private String password;
+	private int age;
+	private List<Address> addressList;
+	private Date lastLoginDate;
 
 	public String getFirstName() {
 		return firstName;
