@@ -1,13 +1,14 @@
 package soru1.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import soru1.interfaces.Address;
 
 public class User {
 
-	public User(String firstName, String lastName, String eMail, String occupation, String password, int age) {
+	public User(String firstName, String lastName, String eMail, String occupation, String password, int age,
+			List<Address> addressList) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -15,6 +16,7 @@ public class User {
 		this.occupation = occupation;
 		this.password = password;
 		this.age = age;
+		this.addressList = addressList;
 	}
 
 	private String firstName;
@@ -24,7 +26,7 @@ public class User {
 	private String password;
 	private int age;
 	private List<Address> addressList;
-	private Date lastLoginDate;
+	private LocalDate lastLoginDate;
 
 	public String getFirstName() {
 		return firstName;
@@ -82,11 +84,11 @@ public class User {
 		this.addressList = addressList;
 	}
 
-	public Date getLastLoginDate() {
+	public LocalDate getLastLoginDate() {
 		return lastLoginDate;
 	}
 
-	public void setLastLoginDate(Date lastLoginDate) {
+	public void setLastLoginDate(LocalDate lastLoginDate) {
 		this.lastLoginDate = lastLoginDate;
 	}
 

@@ -10,6 +10,12 @@ public class Individual extends Account {
 	}
 
 	@Override
+	protected void addInsurance() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public int compareTo(Account o) {
 		return this.getUser().getLastName().compareTo(o.getUser().getLastName());
 	}

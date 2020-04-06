@@ -5,6 +5,7 @@ import java.util.List;
 import soru1.enums.AuthenticationStatus;
 import soru1.models.User;
 import soru1.models.insurances.Insurance;
+import soru1.util.Util;
 
 public abstract class Account implements Comparable<Account> {
 
@@ -46,7 +47,7 @@ public abstract class Account implements Comparable<Account> {
 		if (user != null) {
 
 			StringBuilder builder = new StringBuilder();
-			builder.append("*********USER INFO*********");
+			builder.append("\n*********USER INFO*********");
 			builder.append("\n");
 			builder.append("Name: ");
 			builder.append(user.getFirstName());
@@ -56,9 +57,12 @@ public abstract class Account implements Comparable<Account> {
 			builder.append("Mail: ");
 			builder.append(user.geteMail());
 			builder.append("\n");
-			builder.append("Age: ");
+			builder.append("Age : ");
 			builder.append(user.getAge());
-			// builder.append(user.getLastLoginDate());
+			builder.append("\n");
+			// builder.append("Address : ");
+			// builder.append(user.getAddressList().get(1).toString());
+			builder.append(Util.dateFormatter(user.getLastLoginDate()));
 			System.out.println(builder);
 
 		} else {
@@ -71,9 +75,9 @@ public abstract class Account implements Comparable<Account> {
 
 		if (eMail.equals(account.getUser().geteMail()) && password.equals(account.getUser().getPassword())) {
 			authenticationStatus = AuthenticationStatus.SUCCESS;
+			account.getUser().setLastLoginDate(Util.getCurrentDate());
 		} else {
 			authenticationStatus = AuthenticationStatus.FAIL;
-			// throw new InvalidAuthenticationException(authenticationStatus.getMessage());
 		}
 		return authenticationStatus.getCode();
 	}
@@ -119,4 +123,7 @@ public abstract class Account implements Comparable<Account> {
 		}
 		return true;
 	}
+
+	protected abstract void addInsurance();
+
 }

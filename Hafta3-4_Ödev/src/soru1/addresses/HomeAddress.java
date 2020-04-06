@@ -37,4 +37,10 @@ public class HomeAddress implements Address {
 
 	}
 
+	@Override
+	public String toString() {
+		String addressString = this.getStreet();
+		return addressString;
+	}
+
 }

@@ -47,4 +47,10 @@ public class BusinessAddress implements Address {
 
 	}
 
+	@Override
+	public String toString() {
+		String addressString = this.getBusinessName();
+		return addressString;
+	}
+
 }
