@@ -38,25 +38,30 @@ public class AccountManager {
 	}
 
 	public void createSampleUsers() {
+		System.out.println("Creating sample users...");
+
 		List<Address> user1Addresses = new ArrayList<Address>();
 		User user1 = new User("Can", "Önal", "onalcan20@gmail.com", "unemployed", "201196", 24, user1Addresses);
-		AddressManager.addAddress(user1, new HomeAddress("Barbaros Hayrettin Sokak", 22));
-		AddressManager.addAddress(user1, new HomeAddress("Ataköy sokak", 12));
+		AddressManager.addAddress(user1, new HomeAddress("Home Address", "Barbaros Hayrettin Sokak", 22));
+		AddressManager.addAddress(user1, new BusinessAddress("Spots International", "Kennedy Caddesi", 12));
 		Account account1 = new Individual(user1, new ArrayList<Insurance>());
 		this.accountSet.add(account1);
 
 		List<Address> user2Addresses = new ArrayList<Address>();
 		User user2 = new User("Vicky", "Shapkina", "vicky@gmail.com", "student", "123456", 25, user2Addresses);
-		AddressManager.addAddress(user2, new HomeAddress("Russian Street", 8));
+		AddressManager.addAddress(user2, new HomeAddress("Home Address", "Russian Street", 8));
 		Account account2 = new Individual(user2, new ArrayList<Insurance>());
 		this.accountSet.add(account2);
 
 		List<Address> user3Addresses = new ArrayList<Address>();
 		User user3 = new User("LeBron", "James", "lbj@gmail.com", "player", "2016", 35, user3Addresses);
-		AddressManager.addAddress(user3, new BusinessAddress("LA Lakers", "California", 23));
+		// No address info is defined for the user
+		// AddressManager.addAddress(user3, new BusinessAddress("LA Lakers",
+		// "California", 23));
 		Account account3 = new Enterprise(user3, new ArrayList<Insurance>());
 		this.accountSet.add(account3);
 
+		System.out.println("Done!");
 	}
 
 }

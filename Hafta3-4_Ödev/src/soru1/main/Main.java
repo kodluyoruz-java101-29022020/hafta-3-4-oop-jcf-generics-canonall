@@ -5,8 +5,12 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import soru1.accounts.Account;
+import soru1.addresses.BusinessAddress;
+import soru1.addresses.HomeAddress;
 import soru1.exceptions.InvalidAuthenticationException;
+import soru1.interfaces.Address;
 import soru1.managers.AccountManager;
+import soru1.managers.AddressManager;
 import soru1.models.insurances.CarInsurance;
 import soru1.models.insurances.HealthInsurance;
 import soru1.models.insurances.Insurance;
@@ -25,42 +29,6 @@ public class Main {
 		account = loginLoop(account);
 		callMenu(account);
 
-	}
-
-	private static Account loginLoop(Account account) {
-		account = login(accountManager, account);
-
-		while (account == null) {
-			System.out.println();
-			account = login(accountManager, account);
-		}
-		System.out.println("\nLOGIN SUCCESSFUL");
-		return account;
-	}
-
-	private static Account login(AccountManager accountManager, Account account) {
-		String eMail, password;
-
-		System.out.print("Please enter your e-mail:");
-		eMail = scanner.nextLine();
-
-		System.out.print("Please enter your password:");
-		password = scanner.nextLine();
-
-		try {
-			account = accountManager.login(eMail, password);
-		} catch (InvalidAuthenticationException e) {
-			System.out.println(e.getMessage());
-		}
-		return account;
-	}
-
-	private static AccountManager createSampleUsers() {
-		// create sample users for project
-		Set<Account> accountSet = new TreeSet<Account>();
-		AccountManager accountManager = new AccountManager(accountSet);
-		accountManager.createSampleUsers();
-		return accountManager;
 	}
 
 	private static void callMenu(Account account) {
@@ -95,10 +63,12 @@ public class Main {
 			callMenu(account);
 			break;
 		case 4:
-			// TODO
+			addAddress(account);
+			callMenu(account);
 			break;
 		case 5:
-			// TODO
+			removeAddress(account);
+			callMenu(account);
 			break;
 		case 6:
 			System.out.println("\nLOGOUT SUCCESSFUL");
@@ -110,6 +80,53 @@ public class Main {
 			System.out.println("Please select a valid operation number!\n");
 			callMenu(account);
 		}
+	}
+
+	private static void removeAddress(Account account) {
+		byte key;
+
+		System.out.println();
+		account.showUserAddress(account.getUser());
+
+		if (!account.getUser().getAddressList().isEmpty()) {
+			System.out.print("\nPlease select the address number to remove from your account:");
+			key = scanner.nextByte();
+
+			if (key > account.getUser().getAddressList().size()) {
+				System.out.println("\nPlease select a valid address");
+			} else {
+				AddressManager.removeAddress(account.getUser().getAddressList(), key - 1);
+				System.out.println("\nAddress removed");
+			}
+		}
+	}
+
+	private static Account loginLoop(Account account) {
+		account = login(accountManager, account);
+
+		while (account == null) {
+			System.out.println();
+			account = login(accountManager, account);
+		}
+		System.out.println("\nLOGIN SUCCESSFUL");
+		return account;
+	}
+
+	private static Account login(AccountManager accountManager, Account account) {
+		String eMail, password;
+
+		System.out.print("\nPlease enter your e-mail:");
+		eMail = scanner.nextLine();
+
+		System.out.print("Please enter your password:");
+		password = scanner.nextLine();
+
+		try {
+			account = accountManager.login(eMail, password);
+		} catch (InvalidAuthenticationException e) {
+			System.out.println(e.getMessage());
+		}
+		return account;
 	}
 
 	private static void addInsurance(Account account) {
@@ -168,6 +185,79 @@ public class Main {
 			System.out.println("\nPlease selecet a valid insurance");
 			return null;
 		}
+	}
+
+	private static void addAddress(Account account) {
+
+		byte key;
+
+		System.out.println("\n************NEW ADDRESS************");
+		System.out.println("1-New home address");
+		System.out.println("2-New business address");
+		System.out.print("Please select your address type:");
+		key = scanner.nextByte();
+
+		scanner.nextLine();
+
+		switch (key) {
+		case 1:
+			Address newHomeAddress = getHomeAddressInfo();
+			AddressManager.addAddress(account.getUser(), newHomeAddress);
+			break;
+		case 2:
+			Address newBusinessAddress = getBusinessAddressInfo();
+			AddressManager.addAddress(account.getUser(), newBusinessAddress);
+			break;
+		default:
+			System.out.println("Please select a valid operation number!\n");
+			addAddress(account);
+			break;
+		}
+
+	}
+
+	private static Address getHomeAddressInfo() {
+		String addressName, streetName;
+		int buildingNo;
+
+		System.out.print("\nAdress name:");
+		addressName = scanner.nextLine();
+
+		System.out.print("Street name:");
+		streetName = scanner.nextLine();
+
+		System.out.print("Building no:");
+		buildingNo = scanner.nextInt();
+		scanner.nextLine();
+
+		Address homeAddress = new HomeAddress(addressName, streetName, buildingNo);
+		return homeAddress;
+	}
+
+	private static Address getBusinessAddressInfo() {
+		String streetName, businessName;
+		int buildingNo;
+
+		System.out.print("\nBusiness name:");
+		businessName = scanner.nextLine();
+
+		System.out.print("Street name:");
+		streetName = scanner.nextLine();
+
+		System.out.print("Building no:");
+		buildingNo = scanner.nextInt();
+		scanner.nextLine();
+
+		Address businessAddress = new BusinessAddress(businessName, streetName, buildingNo);
+		return businessAddress;
+	}
+
+	private static AccountManager createSampleUsers() {
+		// create sample users for project
+		Set<Account> accountSet = new TreeSet<Account>();
+		AccountManager accountManager = new AccountManager(accountSet);
+		accountManager.createSampleUsers();
+		return accountManager;
 	}
 
 }

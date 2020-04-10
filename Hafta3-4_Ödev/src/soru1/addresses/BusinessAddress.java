@@ -1,7 +1,5 @@
 package soru1.addresses;
 
-import java.util.List;
-
 import soru1.interfaces.Address;
 
 public class BusinessAddress implements Address {
@@ -17,7 +15,8 @@ public class BusinessAddress implements Address {
 		this.buildingNo = buildingNo;
 	}
 
-	public String getBusinessName() {
+	@Override
+	public String getAddressName() {
 		return businessName;
 	}
 
@@ -25,6 +24,7 @@ public class BusinessAddress implements Address {
 		this.businessName = businessName;
 	}
 
+	@Override
 	public String getStreet() {
 		return street;
 	}
@@ -33,24 +33,13 @@ public class BusinessAddress implements Address {
 		this.street = street;
 	}
 
+	@Override
 	public int getBuildingNo() {
 		return buildingNo;
 	}
 
 	public void setBuildingNo(int buildingNo) {
 		this.buildingNo = buildingNo;
-	}
-
-	@Override
-	public void showAddress(List<Address> addressList) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public String toString() {
-		String addressString = this.getBusinessName();
-		return addressString;
 	}
 
 }

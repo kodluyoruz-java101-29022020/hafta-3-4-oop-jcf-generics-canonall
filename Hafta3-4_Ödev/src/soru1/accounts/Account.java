@@ -1,8 +1,10 @@
 package soru1.accounts;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import soru1.enums.AuthenticationStatus;
+import soru1.interfaces.Address;
 import soru1.models.User;
 import soru1.models.insurances.Insurance;
 import soru1.util.Util;
@@ -46,7 +48,6 @@ public abstract class Account implements Comparable<Account> {
 	public final void showUserInfo(User user) {
 
 		if (user != null) {
-
 			StringBuilder builder = new StringBuilder();
 			builder.append("\n*********USER INFO*********");
 			builder.append("\n");
@@ -65,10 +66,31 @@ public abstract class Account implements Comparable<Account> {
 			builder.append(Util.dateFormatter(user.getLastLoginDate()));
 			System.out.println(builder);
 
+			showUserAddress(user);
+
 		} else {
 			System.out.println("null user");
 		}
 
+	}
+
+	public void showUserAddress(User user) {
+
+		if (user.getAddressList().isEmpty()) {
+			System.out.println("No address info defined to the account");
+
+		} else {
+			int index = 1;
+			List<Address> addressList = new ArrayList<>();
+			addressList = user.getAddressList();
+
+			for (Address address : addressList) {
+				System.out.println("\n****Address-" + (index++) + "****");
+				System.out.println(address.getAddressName());
+				System.out.println(address.getStreet());
+				System.out.println("No:" + address.getBuildingNo());
+			}
+		}
 	}
 
 	public final void showInsurance(List<Insurance> insuranceList) {
@@ -103,6 +125,42 @@ public abstract class Account implements Comparable<Account> {
 			authenticationStatus = AuthenticationStatus.FAIL;
 		}
 		return authenticationStatus.getCode();
+	}
+
+	public boolean addInsurance(Account account, Insurance insurance) {
+		double finalPrice;
+
+		if (account.getInsuranceList().isEmpty()) {
+			List<Insurance> insuranceList = new ArrayList<Insurance>();
+
+			finalPrice = addProfit(insurance.getInsurancePrice());
+			insurance.setTotalPrice(finalPrice);
+
+			insuranceList.add(insurance);
+			account.setInsuranceList(insuranceList);
+			return true;
+
+		} else {
+			if (isSameInsurance(account, insurance)) {
+				return false;
+			} else {
+				finalPrice = addProfit(insurance.getInsurancePrice());
+				insurance.setTotalPrice(finalPrice);
+				account.getInsuranceList().add(insurance);
+				return true;
+			}
+		}
+	}
+
+	protected boolean isSameInsurance(Account account, Insurance insurance) {
+		List<Insurance> previousInsurances = account.getInsuranceList();
+		for (Insurance previousInsurance : previousInsurances) {
+			if (previousInsurance.getInsuranceName().equals(insurance.getInsuranceName())) {
+				return true;
+			}
+		}
+		return false;
+
 	}
 
 	@Override
@@ -147,10 +205,6 @@ public abstract class Account implements Comparable<Account> {
 		return true;
 	}
 
-	public abstract boolean addInsurance(Account account, Insurance insurance);
-
 	protected abstract double addProfit(double insurancePrice);
-
-	protected abstract boolean isSameInsurance(Account account, Insurance insurance);
 
 }
