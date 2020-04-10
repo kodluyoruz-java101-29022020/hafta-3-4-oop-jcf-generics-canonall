@@ -1,6 +1,6 @@
 package soru1.enums;
 
-public enum InsuranceDurations {
+public enum InsuranceType {
 	// HEALTINSURANCE is 50 TL per month
 	// RESIDENCEINSURANCE is 2500 TL per year
 	// CARINSURANCE is 1250 TL per year
@@ -11,7 +11,7 @@ public enum InsuranceDurations {
 	private final byte duration;
 	private final double priceForUnitTime;
 
-	private InsuranceDurations(byte duration, double priceForUnitTime) {
+	private InsuranceType(byte duration, double priceForUnitTime) {
 		this.duration = duration;
 		this.priceForUnitTime = priceForUnitTime;
 	}

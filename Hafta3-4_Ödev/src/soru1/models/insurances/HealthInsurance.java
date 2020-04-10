@@ -1,26 +1,31 @@
 package soru1.models.insurances;
 
 import java.time.LocalDate;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
-import soru1.enums.InsuranceDurations;
+import soru1.enums.InsuranceType;
 
 public class HealthInsurance extends Insurance {
 
+	public HealthInsurance(String insuranceName, LocalDate insuranceBeginningDate) {
+		super(insuranceName, insuranceBeginningDate);
+	}
+
 	@Override
 	protected double calculate(LocalDate insuranceBeginningDate, LocalDate insuranceEndingDate) {
-		Period period = Period.between(insuranceBeginningDate, insuranceEndingDate);
-		int insurancePeriodAsMonth = period.getMonths();
-		double price = insurancePeriodAsMonth * InsuranceDurations.HEALTINSURANCE.getPriceForUnitTime();
+		// Period period = Period.between(insuranceBeginningDate, insuranceEndingDate);
+		int insurancePeriodAsMonth = (int) ChronoUnit.MONTHS.between(insuranceBeginningDate, insuranceEndingDate);
+		double price = insurancePeriodAsMonth * InsuranceType.HEALTINSURANCE.getPriceForUnitTime();
 		return price;
 	}
 
 	@Override
-	protected void setInsuranceEndingDate(LocalDate insuranceBeginningDate) {
+	protected LocalDate setInsuranceEndingDate(LocalDate insuranceBeginningDate) {
 		// Healt Insurance must last for a year
 		LocalDate healthInsuranceEndingDate = insuranceBeginningDate
-				.plusMonths(InsuranceDurations.HEALTINSURANCE.getDuration());
+				.plusMonths(InsuranceType.HEALTINSURANCE.getDuration());
 		super.insuranceEndingDate = healthInsuranceEndingDate;
+		return healthInsuranceEndingDate;
 	}
 
 }

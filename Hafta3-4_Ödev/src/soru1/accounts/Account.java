@@ -9,9 +9,10 @@ import soru1.util.Util;
 
 public abstract class Account implements Comparable<Account> {
 
-	public Account(User user) {
+	public Account(User user, List<Insurance> insuranceList) {
 		super();
 		this.user = user;
+		this.insuranceList = insuranceList;
 	}
 
 	protected User user;
@@ -60,13 +61,35 @@ public abstract class Account implements Comparable<Account> {
 			builder.append("Age : ");
 			builder.append(user.getAge());
 			builder.append("\n");
-			// builder.append("Address : ");
-			// builder.append(user.getAddressList().get(1).toString());
+			builder.append("Last login date:");
 			builder.append(Util.dateFormatter(user.getLastLoginDate()));
 			System.out.println(builder);
 
 		} else {
 			System.out.println("null user");
+		}
+
+	}
+
+	public final void showInsurance(List<Insurance> insuranceList) {
+
+		if (!insuranceList.isEmpty()) {
+			for (Insurance insurance : insuranceList) {
+				StringBuilder builder = new StringBuilder();
+				builder.append("\n*********INSURANCE INFO*********");
+				builder.append("\n");
+				builder.append(insurance.getInsuranceName());
+				builder.append("\nPrice:");
+				builder.append(insurance.getTotalPrice());
+				builder.append("\nBegins:");
+				builder.append(Util.dateFormatter(insurance.getInsuranceBeginningDate()));
+				builder.append("\nEnds:");
+				builder.append(Util.dateFormatter(insurance.getInsuranceEndingDate()));
+				System.out.println(builder);
+			}
+		} else {
+			System.out.println("\n*********INSURANCE INFO*********");
+			System.out.println("\nThere is no item to show");
 		}
 
 	}
@@ -124,6 +147,10 @@ public abstract class Account implements Comparable<Account> {
 		return true;
 	}
 
-	protected abstract void addInsurance();
+	public abstract boolean addInsurance(Account account, Insurance insurance);
+
+	protected abstract double addProfit(double insurancePrice);
+
+	protected abstract boolean isSameInsurance(Account account, Insurance insurance);
 
 }

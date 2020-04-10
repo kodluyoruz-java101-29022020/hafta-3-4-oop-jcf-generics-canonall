@@ -7,6 +7,12 @@ import java.util.TreeSet;
 import soru1.accounts.Account;
 import soru1.exceptions.InvalidAuthenticationException;
 import soru1.managers.AccountManager;
+import soru1.models.insurances.CarInsurance;
+import soru1.models.insurances.HealthInsurance;
+import soru1.models.insurances.Insurance;
+import soru1.models.insurances.ResidenceInsurance;
+import soru1.models.insurances.TravelInsurance;
+import soru1.util.Util;
 
 public class Main {
 
@@ -61,7 +67,7 @@ public class Main {
 
 		byte key;
 
-		System.out.println("************MENU************");
+		System.out.println("\n************MENU************");
 		System.out.println("1-Show user's info");
 		System.out.println("2-Show user's insurance");
 		System.out.println("3-Add insurance");
@@ -81,10 +87,12 @@ public class Main {
 			callMenu(account);
 			break;
 		case 2:
-			// TODO
+			account.showInsurance(account.getInsuranceList());
+			callMenu(account);
 			break;
 		case 3:
-			// TODO
+			addInsurance(account);
+			callMenu(account);
 			break;
 		case 4:
 			// TODO
@@ -101,6 +109,64 @@ public class Main {
 		default:
 			System.out.println("Please select a valid operation number!\n");
 			callMenu(account);
+		}
+	}
+
+	private static void addInsurance(Account account) {
+		// double productPrice;
+
+		Insurance insurance = getInsuranceType();
+		while (insurance == null) {
+			insurance = getInsuranceType();
+		}
+
+		if (account.addInsurance(account, insurance)) {
+			getPayment(insurance, account);
+		} else {
+			System.out.println("\nYou already have " + insurance.getInsuranceName() + " in your account!");
+		}
+	}
+
+	private static void getPayment(Insurance insurance, Account account) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("\n************PAYMENT************");
+		builder.append("\nPayment for ");
+		builder.append(account.getUser().getFirstName());
+		builder.append(" ");
+		builder.append(account.getUser().getLastName());
+		builder.append("'s ");
+		builder.append(insurance.getInsuranceName());
+		builder.append("\nPrice:");
+		builder.append(insurance.getTotalPrice());
+		builder.append(" TL");
+		builder.append("\nInsurance added to your account");
+		System.out.println(builder);
+
+	}
+
+	private static Insurance getInsuranceType() {
+		byte key;
+		System.out.println("\n*********ADD INSURANCE*********");
+		System.out.println("1-Health Insurance");
+		System.out.println("2-Residence Insurance");
+		System.out.println("3-Car Insurance");
+		System.out.println("4-Travel Insurance");
+		System.out.print("Please select an insurance in order to add your account:");
+
+		key = scanner.nextByte();
+		scanner.nextLine();
+		switch (key) {
+		case 1:
+			return new HealthInsurance("Health Insurance", Util.getCurrentDate());
+		case 2:
+			return new ResidenceInsurance("Residence Insurance", Util.getCurrentDate());
+		case 3:
+			return new CarInsurance("Car Insurance", Util.getCurrentDate());
+		case 4:
+			return new TravelInsurance("Travel Insurance", Util.getCurrentDate());
+		default:
+			System.out.println("\nPlease selecet a valid insurance");
+			return null;
 		}
 	}
 

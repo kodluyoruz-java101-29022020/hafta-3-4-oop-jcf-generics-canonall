@@ -8,6 +8,14 @@ public abstract class Insurance {
 	protected double insurancePrice;
 	protected LocalDate insuranceBeginningDate;
 	protected LocalDate insuranceEndingDate;
+	protected double totalPrice;
+
+	public Insurance(String insuranceName, LocalDate insuranceBeginningDate) {
+		this.insuranceName = insuranceName;
+		this.insuranceBeginningDate = insuranceBeginningDate;
+		this.insuranceEndingDate = setInsuranceEndingDate(insuranceBeginningDate);
+		this.insurancePrice = calculate(this.insuranceBeginningDate, this.insuranceEndingDate);
+	}
 
 	public String getInsuranceName() {
 		return insuranceName;
@@ -37,7 +45,15 @@ public abstract class Insurance {
 		return insuranceEndingDate;
 	}
 
-	protected abstract void setInsuranceEndingDate(LocalDate insuranceBeginningDate);
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	protected abstract LocalDate setInsuranceEndingDate(LocalDate insuranceBeginningDate);
 
 	protected abstract double calculate(LocalDate insuranceBeginningDate, LocalDate insuranceEndingDate);
 }
